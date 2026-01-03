@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL}
+      - SPACES_KEY=${SPACES_KEY}
+      - SPACES_SECRET=${SPACES_SECRET}
+      - SPACES_BUCKET=${SPACES_BUCKET}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+      - GOOGLE_ACCESS_TOKEN=${GOOGLE_ACCESS_TOKEN}
+      - APPLE_TEAM_ID=${APPLE_TEAM_ID}
+      - APPLE_KEY_ID=${APPLE_KEY_ID}
+      - APPLE_PRIVATE_KEY=${APPLE_PRIVATE_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - OURA_CLIENT_ID=${OURA_CLIENT_ID}
+      - OURA_CLIENT_SECRET=${OURA_CLIENT_SECRET}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
